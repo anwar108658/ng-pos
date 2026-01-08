@@ -1,0 +1,17 @@
+.scrollCs::-webkit-scrollbar {
+  height: 6px;   /* horizontal */
+  width: 6px;    /* vertical */
+}
+
+.scrollCs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollCs::-webkit-scrollbar-thumb {
+  background-color: #1b9acce5; /* gray-400 */
+  border-radius: 999px;
+}
+
+.scrollCs::-webkit-scrollbar-thumb:hover {
+  background-color: #085c7e; /* gray-500 */
+}

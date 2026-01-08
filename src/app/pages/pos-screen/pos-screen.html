@@ -1,37 +1,68 @@
-<div class="fixed top-0 right-0 flex w-full h-screen bg-white/50 z-30 text-black">
+<div class="fixed top-0 right-0 flex w-full h-screen bg-white z-30 text-black">
     <!-- Left -->
-    <div class="w-[55%] bg-amber-50">
+    <div class="w-[55%] p-2">
         <!-- upper -->
-        <div class="h-[80%]">
-            <table class="w-full text-gray-700">
+        <div class="scrollCs h-[80%] border-2 border-gray-200 overflow-auto">
+            <table class="w-full text-gray-700 border border-gray-300 border-collapse overflow-auto">
                 <thead>
-                    <tr class="text-[.9rem] font-semibold">
-                        <td class="w-[5%]"></td>
-                        <td class="w-[50%]">Item</td>
-                        <td>Qty</td>
-                        <td>Price</td>
-                        <td>Price</td>
-                        <td>Unit</td>
-                        <td>Total</td>
-                        <td class="w-[5%]">Act</td>
+                    <tr class="text-[.9rem] text-center font-semibold bg-gray-100">
+                        <td class="border border-gray-300 px-1"></td>
+                        <td class="border border-gray-300 px-1 ">Item</td>
+                        <td class="border border-gray-300 px-1">Qty</td>
+                        <td class="border border-gray-300 px-1">Price</td>
+                        <td class="border border-gray-300 px-1">Unit</td>
+                        <td class="border border-gray-300 px-1">Total</td>
+                        <td class="border border-gray-300 px-1 ">Act</td>
                     </tr>
                 </thead>
+                <tbody>
+                    @for (item of itemData; track $index) {
+                        <tr class="text-center text-[.8rem] border border-gray-300">
+                            <td class="border border-gray-300"></td>
+                            <td class="flex gap-3 px-1 items-center">
+                                <div>
+                                    <img [src]="item.img" width="30" alt="">
+                                </div>
+                                <div class="whitespace-nowrap overflow-auto scrollCs">
+                                    <p class="font-semibold">{{item.id}} | {{item.name}} | {{item.category}}</p>
+                                    <span class="">Unit Price: {{item.unitPrice}} | Discount {{item.discount}} | Vat {{item.vat}}</span>
+                                </div>
+                            </td>
+                            <td class="border border-gray-300 px-1">{{item.qty}}</td>
+                            <td class="border border-gray-300 px-1">{{item.price}}</td>
+                            <td class="border border-gray-300 px-1">{{item.unitPrice}}</td>
+                            <td class="border border-gray-300 px-1">{{item.total}}</td>
+                            <td class="border border-gray-300 px-1"><p-button icon="pi pi-trash" variant="text" severity="danger" styleClass="p-0" size="small" /></td>
+                        </tr>
+                        }
+                </tbody>
             </table>
         </div>
         <!-- lower -->
-        <div class="h-[20%]">s</div>
+        <div class="h-[20%] m-1 p-1 bg-cyan-50 flex justify-between">
+            <div class="max-w-[30%] text-[.9rem] font-semibold text-gray-800 whitespace-nowrap">
+                <p class="flex justify-between"><span>Sub Total (SAR):</span> <span>100.00</span></p>
+                <p class="flex justify-between"><span>Discount (SAR):</span> <span>0.00</span></p>
+                <p class="flex justify-between"><span>Tax (SAR):</span> <span>5.00</span></p>
+            </div>
+            <div class="max-w-[30%] text-[1rem] font-bold text-blue-800 whitespace-nowrap">
+                <p><span class="font-semibold">Item(s) : </span> <span> 3 </span></p>
+                <p><span>Net Amount</span></p>
+                <p> <sup>SAR </sup> <span>105.00</span></p>
+            </div>
+        </div>
     </div>
 
     <!-- Right Side-->
-    <div class="w-[45%] bg-blue-50">
+    <div class="w-[45%]">
         <!-- upper -->
         <div class="h-[65%] bg-orange-100">s</div>
         <!-- Lower -->
         <div class="h-[35%] grid grid-cols-7">
             <div class="col-span-2">calculater</div>
-            <div class="col-span-5 grid grid-cols-5 grid-rows-3 gap-1 overflow-auto">
+            <div class="col-span-5 grid grid-cols-5 grid-rows-3 gap-1 p-1 overflow-auto scrollCs">
                 @for (item of posButton; track $index) {
-                    <button [class]="item.class  + ' p-1 rounded-lg cursor-pointer text-[.7rem] font-semibold text-white'">{{item.label}}</button>
+                    <button [class]="item.class  + ' p-1 rounded-lg cursor-pointer text-[.8rem] font-semibold text-white'">{{item.label}}</button>
                 }
             </div>
         </div>
