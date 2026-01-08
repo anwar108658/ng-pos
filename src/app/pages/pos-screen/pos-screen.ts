@@ -45,7 +45,7 @@ export class PosScreen {
     {id:1,class:""},
     {id:2,class:""},
     {id:3,class:""},
-    {id:0,class:"  row-span-2 "},
+    {id:"↲",class:"  row-span-2 "},
     {id:0,class:""},
     {id:0,class:""},
     {id:0,class:""},
