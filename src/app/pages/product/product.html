@@ -23,7 +23,34 @@
       (ngSubmit)="AddProduct(productForm)"
       class="mt-2 flex flex-col gap-3"
     >
-      <div class="grid grid-cols-2 gap-7">
+    <div>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+        <p-floatlabel class="flex-1" variant="on">
+          <p-inputnumber
+              class="w-full"
+              size="small"
+              type="number"
+              id="on_title"
+              formControlName="itemCode"
+              autocomplete="off"
+              [useGrouping]="false"
+            />
+          <label for="on_title">Item Code</label>
+        </p-floatlabel>
+        <p-floatlabel variant="on">
+          <p-select
+            appendTo="body"
+            styleClass="w-full!"
+            fluid
+            [options]="uomList"
+            id="on_priority"
+            formControlName="uOm"
+            size="small"
+            class="w-full md:w-56"
+          />
+          <label for="on_priority">Category</label>
+        </p-floatlabel>
         <p-floatlabel class="flex-1" variant="on">
           <input
             class="w-full"

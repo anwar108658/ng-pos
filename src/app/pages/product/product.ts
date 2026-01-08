@@ -48,11 +48,29 @@ export class Product {
   // popup
   isPopupOpen = false;
   selectCategory = ['Phone', 'Laptop'];
+  uomList = [
+  { code: 'PCS', label: 'Piece' },
+  { code: 'KG', label: 'Kilogram' },
+  { code: 'G', label: 'Gram' },
+  { code: 'L', label: 'Liter' },
+  { code: 'ML', label: 'Milliliter' },
+  { code: 'BOX', label: 'Box' },
+  { code: 'PACK', label: 'Pack' },
+  { code: 'DOZEN', label: '12 Pieces' },
+];
+
   products: any = [];
   isUpdate = false;
   editId: null | number = null;
 
   productForm = new FormGroup({
+
+    itemCode: new FormControl(null, [
+     Validators.required,
+     Validators.minLength(12),
+     Validators.maxLength(12),
+    ]),
+    uOm: new FormControl('', [Validators.required]),
     productName: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
@@ -64,14 +82,20 @@ export class Product {
       Validators.maxLength(30),
     ]),
     date: new FormControl('', [Validators.required]),
-    category: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    category: new FormControl('', [Validators.required]),
   });
 
   // Add + update base on condition (function)  both array + local Storage
   AddProduct(form: any) {
     if (!this.isUpdate === true) {
-
       if (form.invalid) {this.show(); return;}
+
+      const isProductExist = this.products.some((p:any) => p.itemCode === form.value.itemCode || p.productName === form.value.productName)
+      if (isProductExist) {
+        console.log("stop")
+      }else{
+        console.log("first")
+      }
       const value = { id: Math.random() * 3000, ...form.value };
       this.products.push(value);
       localStorage.setItem('product', JSON.stringify(this.products));

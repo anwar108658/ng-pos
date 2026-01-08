@@ -1,5 +1,5 @@
 <div class="fixed top-0 right-0 flex w-full h-screen bg-white z-30 text-black">
-    <!-- Left -->
+    <!-- Left Side-->
     <div class="w-[55%] p-2">
         <!-- upper -->
         <div class="scrollCs h-[80%] border-2 border-gray-200 overflow-auto">
@@ -9,9 +9,9 @@
                         <td class="border border-gray-300 px-1"></td>
                         <td class="border border-gray-300 px-1 ">Item</td>
                         <td class="border border-gray-300 px-1">Qty</td>
-                        <td class="border border-gray-300 px-1">Price</td>
+                        <td class="border border-gray-300 px-1">Before D</td>
                         <td class="border border-gray-300 px-1">Unit</td>
-                        <td class="border border-gray-300 px-1">Total</td>
+                        <td class="border border-gray-300 px-1">After D</td>
                         <td class="border border-gray-300 px-1 ">Act</td>
                     </tr>
                 </thead>
@@ -56,10 +56,28 @@
     <!-- Right Side-->
     <div class="w-[45%]">
         <!-- upper -->
-        <div class="h-[65%] bg-orange-100">s</div>
+        <div class="h-[65%] flex items-end bg-orange-100">
+            <input type="text" placeholder="Scan here" fluid  pInputText >
+        </div>
         <!-- Lower -->
         <div class="h-[35%] grid grid-cols-7">
-            <div class="col-span-2">calculater</div>
+            <div class="flex flex-col col-span-2 bg-blue-50 p-1 mb-1">
+                <p class="font-semibold text-[.9rem] text-amber-700">Set Quantity : </p>
+                <input
+                class="w-full"
+                pSize="small"
+                pInputText
+                id="on_title"
+                autocomplete="off"
+                />
+                <div class="h-full p-1 grid grid-cols-4 gap-1 grid-rows-4">
+                    @for (item of calculateNum; track $index) {
+                        <div [class]="item.class">
+                            <p-button variant="outlined" severity="primary" [styleClass]="'w-full h-full'" size="small" [label]="item.id.toString()"/>
+                        </div>
+                    }
+                </div>
+            </div>
             <div class="col-span-5 grid grid-cols-5 grid-rows-3 gap-1 p-1 overflow-auto scrollCs">
                 @for (item of posButton; track $index) {
                     <button [class]="item.class  + ' p-1 rounded-lg cursor-pointer text-[.8rem] font-semibold text-white'">{{item.label}}</button>
