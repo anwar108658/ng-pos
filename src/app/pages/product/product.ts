@@ -106,10 +106,7 @@ export class Product {
     } else {
       // for update product
       if (form.invalid || this.editId === null) {this.show('warn','form Invalid');return;}
-      if(!this.checkProduct(form)){
-        this.show('error','Please Enter Uniq Product Name or Item Code')
-        return;
-      }
+      if(!this.checkProduct(form)){this.show('error','Please Enter Uniq Item Code');return;}
 
       this.products = this.products.map((p: any) => {
         if (p.id === this.editId) {
