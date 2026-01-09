@@ -57,11 +57,11 @@
     <div class="w-[45%]">
         <!-- upper -->
         <div class="h-[65%] flex items-end bg-orange-100">
-            <input type="text" placeholder="Scan here" fluid  pInputText >
+            <p-autocomplete fluid styleClass="w-full"  [suggestions]="['items','name']"/>
         </div>
         <!-- Lower -->
-        <div class="h-[35%] grid grid-cols-7">
-            <div class="flex flex-col col-span-2 bg-blue-50 p-1 mb-1">
+        <div class="h-[35%] grid grid-cols-8">
+            <div class="flex flex-col col-span-3 bg-blue-50 p-1">
                 <p class="font-semibold text-[.9rem] text-amber-700">Set Quantity : </p>
                 <input
                 class="w-full"
@@ -78,7 +78,7 @@
                     }
                 </div>
             </div>
-            <div class="col-span-5 grid grid-cols-5 grid-rows-3 gap-1 p-1 overflow-auto scrollCs">
+            <div class="col-span-5 grid grid-cols-4 grid-rows-4 gap-1 p-1 overflow-auto scrollCs">
                 @for (item of posButton; track $index) {
                     <button [class]="item.class  + ' p-1 rounded-lg cursor-pointer text-[.8rem] font-semibold text-white'">{{item.label}}</button>
                 }

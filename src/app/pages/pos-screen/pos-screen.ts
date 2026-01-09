@@ -3,14 +3,19 @@ import { Button } from "primeng/button";
 import { InputText, InputTextModule } from 'primeng/inputtext';
 import { InputNumber } from "primeng/inputnumber";
 import { RouterLink } from "@angular/router";
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [Button, InputTextModule, RouterLink],
+  imports: [Button, InputTextModule,AutoCompleteModule],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
 export class PosScreen {
+  ngOnInit(){
+    this.products = JSON.parse(localStorage.getItem('product')||'[]')
+    console.log(this.products) 
+  }
   posButton=[
     {id:1,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-600/70"},
     {id:2,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-yellow-500/70"},
@@ -23,6 +28,7 @@ export class PosScreen {
     {id:9,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
     {id:10,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
     {id:11,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
+    {id:12,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
     {id:12,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
     {id:12,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
     {id:13,name:"customers",label:"Customers",class:"col-span-2 row-span-1 bg-green-400"},
@@ -50,4 +56,5 @@ export class PosScreen {
     {id:0,class:""},
     {id:0,class:""},
   ]
+  products=[];
 }

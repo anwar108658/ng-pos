@@ -89,14 +89,9 @@ export class Product {
   AddProduct(form: any) {
     //for Add product
     if (!this.isUpdate === true) {
-      if (form.invalid) {
-        this.show('warn','form Invalid'); 
-        return;
-      }
-      if(!this.checkProduct(form)){
-        this.show('error','Please Enter Uniq Product Name or Item Code')
-        return;
-      }
+      if (form.invalid) {this.show('warn','form Invalid');return;}
+      if(!this.checkProduct(form)){this.show('error','Please Enter Uniq Item Code');return;}
+
       const value = { id: Math.random() * 3000, ...form.value };
       this.products.push(value);
       localStorage.setItem('product', JSON.stringify(this.products));
