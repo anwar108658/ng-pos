@@ -41,8 +41,8 @@ export class Product {
 
   // message
 
-  show() {
-    this.messageService.add({ severity: 'warn', summary: 'Alert', detail: 'Form invalid', life: 3000 });
+  show(type:string,detail:string) {
+    this.messageService.add({ severity: type, summary: 'Alert', detail: detail, life: 3000 });
   }
 
   // popup
@@ -65,10 +65,10 @@ export class Product {
 
   productForm = new FormGroup({
 
-    itemCode: new FormControl(null, [
+    itemCode: new FormControl('', [
      Validators.required,
-     Validators.minLength(12),
-     Validators.maxLength(12),
+     Validators.minLength(5),
+     Validators.maxLength(15),
     ]),
     uOm: new FormControl('', [Validators.required]),
     productName: new FormControl('', [
@@ -87,14 +87,15 @@ export class Product {
 
   // Add + update base on condition (function)  both array + local Storage
   AddProduct(form: any) {
+    //for Add product
     if (!this.isUpdate === true) {
-      if (form.invalid) {this.show(); return;}
-
-      const isProductExist = this.products.some((p:any) => p.itemCode === form.value.itemCode || p.productName === form.value.productName)
-      if (isProductExist) {
-        console.log("stop")
-      }else{
-        console.log("first")
+      if (form.invalid) {
+        this.show('warn','form Invalid'); 
+        return;
+      }
+      if(!this.checkProduct(form)){
+        this.show('error','Please Enter Uniq Product Name or Item Code')
+        return;
       }
       const value = { id: Math.random() * 3000, ...form.value };
       this.products.push(value);
@@ -103,13 +104,16 @@ export class Product {
       this.isPopupOpen = false;
 
     } else {
-
-      if (form.invalid || this.editId === null) {this.show();return;}
+      // for update product
+      if (form.invalid || this.editId === null) {this.show('warn','form Invalid');return;}
+      if(!this.checkProduct(form)){
+        this.show('error','Please Enter Uniq Product Name or Item Code')
+        return;
+      }
 
       this.products = this.products.map((p: any) => {
         if (p.id === this.editId) {
           let val = { ...p, ...this.productForm.value };
-          console.log(val, p);
           return {
             ...p,
             ...this.productForm.value,
@@ -132,8 +136,9 @@ export class Product {
       ...data,
       date: new Date(data.date),
     });
+    this.productForm.get('itemCode')?.disable();
   }
-
+  
   // for delete Product (function) both array + local Storage
   deleteProduct(id: any) {
     this.products = this.products.filter((p: any) => {
@@ -141,12 +146,21 @@ export class Product {
     });
     localStorage.setItem('product', JSON.stringify(this.products));
   }
-
+  
+  // for check  ItemCode not same
+  checkProduct(form:any):boolean {
+    const isProductExist = this.products.some((p:any) => p.itemCode === form.value.itemCode)
+    if (isProductExist) {
+      return false;
+    }
+    return true
+  }
+  
   formClose(){
     this.isUpdate=false;
     this.editId=null;
     this.productForm.reset();
     this.isPopupOpen = false;
-    console.log(this.isUpdate,this.editId,this.isPopupOpen)
+    this.productForm.get('itemCode')?.enable()
   }
 }

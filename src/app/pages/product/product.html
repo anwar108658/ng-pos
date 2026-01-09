@@ -27,15 +27,14 @@
     </div>
     <div class="grid grid-cols-2 gap-3">
         <p-floatlabel class="flex-1" variant="on">
-          <p-inputnumber
-              class="w-full"
-              size="small"
-              type="number"
-              id="on_title"
-              formControlName="itemCode"
-              autocomplete="off"
-              [useGrouping]="false"
-            />
+          <input
+            class="w-full"
+            pSize="small"
+            pInputText
+            id="on_title"
+            formControlName="itemCode"
+            autocomplete="off"
+          />
           <label for="on_title">Item Code</label>
         </p-floatlabel>
         <p-floatlabel variant="on">
@@ -143,12 +142,12 @@
     [class.text-gray-300]="this.productSetting.darkMode()"
     class="bg-gray-100"
   >
-    <tr>
-      <th class="px-4 py-2 text-left text-md font-semibold">Product Name</th>
-      <th class="px-4 py-2 text-left text-md font-semibold">Price</th>
-      <th class="px-4 py-2 text-left text-md font-semibold">Date</th>
-      <th class="px-4 py-2 text-left text-md font-semibold">Category</th>
-      <th class="px-4 py-2 text-left text-md font-semibold">Action</th>
+    <tr  [className]="this.productSetting.darkMode()?'text-gray-300':'text-gray-700'">
+      <th class="px-4 py-2 text-left text-sm font-semibold">Product Name</th>
+      <th class="px-4 py-2 text-left text-sm font-semibold">Price</th>
+      <th class="px-4 py-2 text-left text-sm font-semibold">Date</th>
+      <th class="px-4 py-2 text-left text-sm font-semibold">Category</th>
+      <th class="px-4 py-2 text-left text-sm font-semibold">Action</th>
     </tr>
   </thead>
 
