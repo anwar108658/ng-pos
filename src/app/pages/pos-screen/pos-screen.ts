@@ -5,10 +5,11 @@ import { InputNumber } from "primeng/inputnumber";
 import { RouterLink } from "@angular/router";
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
+import { NgClass } from "../../../../node_modules/@angular/common/types/_common_module-chunk";
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [FormsModule,Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule],
+  imports: [FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
@@ -17,23 +18,28 @@ export class PosScreen {
     this.products = JSON.parse(localStorage.getItem('product')||'[]')
     console.log(this.products) 
   }
-  posButton=[
-    {id:1,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-600/70"},
-    {id:2,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-yellow-500/70"},
-    {id:2,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-yellow-500/70"},
-    {id:4,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-blue-800/60"},
-    {id:5,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-red-400"},
-    {id:6,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-lime-500/70"},
-    {id:6,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-lime-500/70"},
-    {id:6,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-lime-500/70"},
-    {id:9,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
-    {id:10,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
-    {id:11,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
-    {id:12,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
-    {id:12,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
-    {id:12,name:"customers",label:"Customers",class:"col-span-1 row-span-1 bg-green-400"},
-    {id:13,name:"customers",label:"Customers",class:"col-span-2 row-span-1 bg-green-400"},
-  ];
+posButtons = [
+  { id: 1, name: 'customers', label: 'Customers', color: 'green', col: 1, row: 1 },
+  { id: 2, name: 'orders', label: 'Orders', color: 'yellow', col: 1, row: 1 },
+  { id: 3, name: 'sales', label: 'Sales', color: 'blue', col: 1, row: 1 },
+  { id: 4, name: 'Back', label: 'back', color: 'red', col: 1, row: 1 },
+  { id: 5, name: 'reports', label: 'Reports', color: 'lime', col: 2, row: 1 },
+];
+
+getButtonClasses(item: any): string {
+  const colorClasses:any = {
+    green: 'bg-green-600/70',
+    yellow: 'bg-yellow-500/70',
+    blue: 'bg-blue-800/60',
+    red: 'bg-red-400',
+    lime: 'bg-lime-500/70'
+  };
+  
+  const gridClasses = `col-span-${item.col} row-span-${item.row}`;
+  
+  return `${colorClasses[item.color]} ${gridClasses} rounded-md text-white text-[.8rem] font-semibold p-2`;
+}
+
   calculateNum=[
     {id:7,class:""},
     {id:8,class:""},
@@ -55,18 +61,14 @@ export class PosScreen {
   selectedProductsAdvanced:any;
   filteredProducts:any;
   addCartProducts:any[]=[];
-  filterproducts(event:AutoCompleteCompleteEvent){
-      let filtered: any[] = [];
-      let query = event.query;
 
-      for (let index = 0; index < this.products.length; index++) {
-        const product:any = this.products[index];
-        if (product.itemCode.includes(query)) {
-            filtered.push(product);
-          }
-      }
-      this.filteredProducts = filtered;
-  }
+filterproducts(event: AutoCompleteCompleteEvent) {
+  const query = event.query.trim().toLowerCase();
+
+  this.filteredProducts = this.products.filter((product: any) =>
+    product.itemCode.toLowerCase().includes(query)
+  );
+}
 
 selectProduct() {
   const existingItem = this.addCartProducts.find(
@@ -100,4 +102,10 @@ onKeyUp(e:any){
     this.selectedProductsAdvanced = null;
   }
 }
+  // for delete Product (function) both array + local Storage
+  deleteProduct(id: any) {
+    this.addCartProducts = this.addCartProducts.filter((p: any) => {
+      return p.id !== id;
+    });
+  }
 }

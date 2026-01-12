@@ -32,7 +32,7 @@
                             <td class="border border-gray-300 px-1">{{item.price}}</td>
                             <td class="border border-gray-300 px-1">{{item.unitPrice}}</td>
                             <td class="border border-gray-300 px-1">{{item.total}}</td>
-                            <td class="border border-gray-300 px-1"><p-button icon="pi pi-trash" variant="text" severity="danger" styleClass="p-0" size="small" /></td>
+                            <td class="border border-gray-300 px-1"><p-button (onClick)="deleteProduct(item.id)" icon="pi pi-trash" variant="text" severity="danger" styleClass="p-0" size="small" /></td>
                         </tr>
                         }
                 </tbody>
@@ -67,7 +67,7 @@
                                 <p>{{product.category}}</p>
                             </div>
                         </div>
-                        <p>{{product.itemCode}}</p>
+                        <p class="underline">#{{product.itemCode}}</p>
                         <div>
                             <p class="flex items-center gap-2"><span class="pi pi-indian-rupee text-[.7rem]"></span> <span class="text-green-500">{{product.price}}</span></p>
                         </div>
@@ -91,8 +91,10 @@
                 </div>
             </div>
             <div class="col-span-5 grid grid-cols-4 grid-rows-4 gap-1 p-1 overflow-auto scrollCs">
-                @for (item of posButton; track $index) {
-                    <button [class]="item.class  + ' p-1 rounded-lg cursor-pointer text-[.8rem] font-semibold text-white'">{{item.label}}</button>
+                @for (item of posButtons; track $index) {
+                    <button 
+                   [class]="getButtonClasses(item)"
+                    >{{item.label}}</button>
                 }
             </div>
         </div>

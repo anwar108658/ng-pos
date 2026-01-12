@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe,CurrencyPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
   imports: [
     ReactiveFormsModule,
     DatePipe,
+    CurrencyPipe,
     Button,
     DialogModule,
     InputTextModule,
@@ -106,10 +107,7 @@ export class Product {
       this.products = this.products.map((p: any) => {
         if (p.id === this.editId) {
           let val = { ...p, ...this.productForm.value };
-          return {
-            ...p,
-            ...this.productForm.value,
-          };
+          return val
         }
         return p;
       });
