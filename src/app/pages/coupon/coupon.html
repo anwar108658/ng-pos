@@ -2,7 +2,7 @@
   <div class="p-2 py-5 w-full flex justify-end">
     <p-toast />
     <p-button
-    (onClick)="[(isPopupOpen = true), this.productForm.reset()]"
+    (onClick)="[(isPopupOpen = true), this.couponForm.reset()]"
     label="Coupon"
     size="small"
     variant="outlined"
@@ -19,8 +19,8 @@
   [style]="{ width: '30rem' }"
   >
   <form
-      [formGroup]="productForm"
-      (ngSubmit)="AddProduct(productForm)"
+      [formGroup]="couponForm"
+      (ngSubmit)="AddCoupon(couponForm)"
       class="mt-2 flex flex-col gap-3"
     >
     <div>
@@ -32,23 +32,10 @@
             pSize="small"
             pInputText
             id="on_title"
-            formControlName="itemCode"
+            formControlName="couponId"
             autocomplete="off"
           />
-          <label for="on_title">Item Code</label>
-        </p-floatlabel>
-        <p-floatlabel variant="on">
-          <p-select
-            appendTo="body"
-            styleClass="w-full!"
-            fluid
-            [options]="uomList"
-            id="on_priority"
-            formControlName="uOm"
-            size="small"
-            class="w-full md:w-56"
-          />
-          <label for="on_priority">U-O-M</label>
+          <label for="on_title">Coupon Id</label>
         </p-floatlabel>
         <p-floatlabel class="flex-1" variant="on">
           <input
@@ -56,10 +43,10 @@
             pSize="small"
             pInputText
             id="on_title"
-            formControlName="productName"
+            formControlName="couponName"
             autocomplete="off"
           />
-          <label for="on_title">Product Name</label>
+          <label for="on_title">Coupon Name</label>
         </p-floatlabel>
         <p-floatlabel class="flex-1" variant="on">
           <p-inputnumber
@@ -67,46 +54,23 @@
             size="small"
             type="number"
             id="on_title"
-            formControlName="price"
+            formControlName="amount"
+            [suffix]="'%'"
+            [min]="0"
+            [max]="100"
             mode="decimal"
-            [useGrouping]="false"
-            [minFractionDigits]="0"
             [maxFractionDigits]="2"
+            [minFractionDigits]="0"
+            [useGrouping]="false"
             autocomplete="off"
           />
-          <label for="on_title">Price</label>
-        </p-floatlabel>
-        <p-floatlabel variant="on">
-          <p-select
-            appendTo="body"
-            styleClass="w-full!"
-            fluid
-            [options]="selectCategory"
-            id="on_priority"
-            formControlName="category"
-            size="small"
-            class="w-full md:w-56"
-          />
-          <label for="on_priority">Category</label>
-        </p-floatlabel>
-        <p-floatlabel variant="on">
-          <p-datepicker
-            appendTo="body"
-            fluid
-            size="small"
-            showClear
-            inputId="on_deadline"
-            formControlName="date"
-            showIcon
-            iconDisplay="input"
-          />
-          <label for="on_deadline">Date</label>
+          <label for="on_title">Amount</label>
         </p-floatlabel>
       </div>
       <div class="mt-4 flex gap-2 justify-between">
         <div class="flex gap-2">
           <p-button
-            (onClick)="this.productForm.reset()"
+            (onClick)="this.couponForm.reset()"
             [disabled]="isUpdate"
             variant="outlined"
             severity="warn"
@@ -147,30 +111,26 @@
       class="bg-gray-100"
     >
       <tr  [className]="this.productSetting.darkMode()?'text-gray-300':'text-gray-700'">
-        <th class="px-4 py-2 text-left text-sm font-semibold">Item Code</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold">Product Name</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold">Price</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold">Date</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold">Category</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold">Coupon Id</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold">Coupon Name</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold">Amount</th>
         <th class="px-4 py-2 text-left text-sm font-semibold">Action</th>
       </tr>
     </thead>
   
     <tbody>
-      @for (p of products; track p; let i = $index) {
+      @for (p of coupons; track p; let i = $index) {
       <tr
         [class.hover:bg-gray-800]="this.productSetting.darkMode()"
         [class.border-y-gray-700]="this.productSetting.darkMode()"
         class="hover:bg-gray-50 border-y border-gray-300"
       >
-        <td class="px-4 py-1 text-[.8rem]">{{ p.itemCode }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.productName }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.price | currency }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.date | date : 'dd-MM-yyyy' }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.category }}</td>
+        <td class="px-4 py-1 text-[.8rem]">{{ p.couponId }}</td>
+        <td class="px-4 py-1 text-[.8rem]">{{ p.couponName }}</td>
+        <td class="px-4 py-1 text-[.8rem]">{{ p.amount / 100 | percent }}</td>
         <td class="px-4 py-1 text-[.8rem] flex gap-2">
           <p-button
-            (onClick)="editProduct(p, p.id)"
+            (onClick)="editProduct(p, p.couponId)"
             severity="help"
             [variant]="this.productSetting.darkMode() ? 'text' : 'outlined'"
             icon="pi pi-pencil"
@@ -178,7 +138,7 @@
             styleClass="p-1"
           />
           <p-button
-            (onClick)="deleteProduct(p.id)"
+            (onClick)="deleteProduct(p.couponId)"
             severity="danger"
             [variant]="this.productSetting.darkMode() ? 'text' : 'outlined'"
             icon="pi pi-trash"

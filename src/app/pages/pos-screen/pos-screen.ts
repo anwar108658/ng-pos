@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { Button } from "primeng/button";
-import { InputText, InputTextModule } from 'primeng/inputtext';
-import { InputNumber } from "primeng/inputnumber";
-import { RouterLink } from "@angular/router";
+import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
-import { NgClass } from "../../../../node_modules/@angular/common/types/_common_module-chunk";
 
 @Component({
   selector: 'app-pos-screen',
@@ -53,8 +50,6 @@ getButtonClasses(item: any): string {
     {id:2,class:""},
     {id:3,class:""},
     {id:"↲",class:"  row-span-2 "},
-    {id:0,class:""},
-    {id:0,class:""},
     {id:0,class:""},
   ]
   products=[];

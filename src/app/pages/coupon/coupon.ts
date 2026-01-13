@@ -1,4 +1,4 @@
-import { DatePipe,CurrencyPipe } from '@angular/common';
+import { DatePipe,CurrencyPipe, PercentPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
@@ -16,8 +16,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-product',
   imports: [
     ReactiveFormsModule,
-    DatePipe,
-    CurrencyPipe,
+    PercentPipe,
     Button,
     DialogModule,
     InputTextModule,
@@ -37,7 +36,7 @@ export class Coupon {
 
   // load data(product) from local storage
   ngOnInit() {
-    this.products = JSON.parse(localStorage.getItem('coupon') || '[]');
+    this.coupons = JSON.parse(localStorage.getItem('coupon') || '[]');
   }
 
   // message
@@ -60,87 +59,79 @@ export class Coupon {
   { code: 'DOZEN', label: '12 Pieces' },
 ];
 
-  products: any = [];
+  coupons: any = [];
   isUpdate = false;
   editId: null | number = null;
 
-  productForm = new FormGroup({
+  couponForm = new FormGroup({
 
-    itemCode: new FormControl('', [
+    couponId: new FormControl('', [
      Validators.required,
-     Validators.minLength(5),
+     Validators.minLength(1),
      Validators.maxLength(15),
     ]),
-    uOm: new FormControl('', [Validators.required]),
-    productName: new FormControl('', [
+    couponName: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(30),
     ]),
-    price: new FormControl('', [
+    amount: new FormControl('', [
       Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(30),
     ]),
-    date: new FormControl('', [Validators.required]),
-    category: new FormControl('', [Validators.required]),
   });
 
   // Add + update base on condition (function)  both array + local Storage
-  AddProduct(form: any) {
-    //for Add product
+  AddCoupon(form: any) {
+    //for Add coupon
     if (!this.isUpdate === true) {
       if (form.invalid) {this.show('warn','form Invalid');return;}
-      if(!this.checkProduct(form)){this.show('error','Please Enter Uniq Item Code');return;}
-
-      const value = { id: Math.random() * 3000, ...form.value };
-      this.products.push(value);
-      localStorage.setItem('coupon', JSON.stringify(this.products));
-      this.productForm.reset();
+      if(!this.checkCoupon(form)){this.show('error','Please Enter Uniq Coupon Id');return;}
+      this.coupons.push(form.value);
+      localStorage.setItem('coupon', JSON.stringify(this.coupons));
+      this.couponForm.reset();
       this.isPopupOpen = false;
 
     } else {
-      // for update product
+      // for update coupon
       if (form.invalid || this.editId === null) {this.show('warn','form Invalid');return;}
-      if(!this.checkProduct(form)){this.show('error','Please Enter Uniq Item Code');return;}
+      if(!this.checkCoupon(form)){this.show('error','Please Enter Uniq Item Code');return;}
 
-      this.products = this.products.map((p: any) => {
-        if (p.id === this.editId) {
-          let val = { ...p, ...this.productForm.value };
+      this.coupons = this.coupons.map((p: any) => {
+        if (p.couponId === this.editId) {
+          let val = { ...p, ...this.couponForm.value };
           return val
         }
         return p;
       });
 
-      localStorage.setItem('coupon', JSON.stringify(this.products));
+      localStorage.setItem('coupon', JSON.stringify(this.coupons));
       this.formClose()
     }
   }
 
-  // only get id for edit product (function)
+  // only get id for edit coupon (function)
   editProduct(data: any, id: number) {
     this.isPopupOpen = true;
     this.isUpdate = true;
     this.editId = id;
-    this.productForm.patchValue({
+    this.couponForm.patchValue({
       ...data,
-      date: new Date(data.date),
     });
-    this.productForm.get('itemCode')?.disable();
+    this.couponForm.get('couponId')?.disable();
   }
   
-  // for delete Product (function) both array + local Storage
+  // for delete coupon (function) both array + local Storage
   deleteProduct(id: any) {
-    this.products = this.products.filter((p: any) => {
-      return p.id !== id;
+    this.coupons = this.coupons.filter((p: any) => {
+      return p.couponId !== id;
     });
-    localStorage.setItem('coupon', JSON.stringify(this.products));
+    localStorage.setItem('coupon', JSON.stringify(this.coupons));
   }
   
   // for check  ItemCode not same
-  checkProduct(form:any):boolean {
-    const isProductExist = this.products.some((p:any) => p.itemCode === form.value.itemCode)
-    if (isProductExist) {
+  checkCoupon(form:any):boolean {
+    const isCouponExist = this.coupons.some((p:any) => p.couponId === form.value.couponId)
+    if (isCouponExist) {
       return false;
     }
     return true
@@ -149,8 +140,8 @@ export class Coupon {
   formClose(){
     this.isUpdate=false;
     this.editId=null;
-    this.productForm.reset();
+    this.couponForm.reset();
     this.isPopupOpen = false;
-    this.productForm.get('itemCode')?.enable()
+    this.couponForm.get('couponId')?.enable()
   }
 }
