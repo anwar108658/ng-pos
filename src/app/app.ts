@@ -16,8 +16,7 @@ export class App {
   isSidebarOpen:boolean=true
   sideMenu=[
     {id:1,route:"product",label:"Product",icon:"pi pi-cart-plus"},
-    {id:1,route:"discount",label:"Discount",icon:"pi pi-money-bill"},
-    {id:1,route:"gif",label:"Gift",icon:"pi pi-gift"},
+    {id:1,route:"coupon",label:"Coupon",icon:"pi pi-gift"},
     {id:1,route:"pos_screen",label:"point of sale",icon:"pi pi-receipt"},
   ]
   

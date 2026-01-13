@@ -1,5 +1,6 @@
 <div [class.bg-[#040619]]="this.productSetting.darkMode()" class="h-screen w-full flex">
-  <!-- menu -->
+
+  <!-- left Sidebar -->
   <div
     [class.w-64]="isSidebarOpen"
     [class.w-15]="!isSidebarOpen"
@@ -19,6 +20,8 @@
         (onClick)="isSidebarOpen = !isSidebarOpen"
         [icon]="'pi pi-bars'"
         variant="text"
+        size="small"
+        class="p-0 px-2"
         severity="secondary"
       />
     </div>
@@ -64,7 +67,7 @@
     </div>
   </div>
 
-  <!-- dashboard -->
+  <!-- pages Content -->
   <div class="flex-1 overflow-x-hidden">
     <nav
       [class.bg-gray-950]="this.productSetting.darkMode()"
@@ -72,4 +75,5 @@
     ></nav>
     <router-outlet />
   </div>
+
 </div>
