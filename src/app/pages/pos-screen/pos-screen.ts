@@ -4,11 +4,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
 import { Popover } from "primeng/popover";
-import { PercentPipe } from '@angular/common';
+import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [PercentPipe,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule, Popover],
+  imports: [PercentPipe,CurrencyPipe,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule, Popover,TableModule],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
@@ -63,6 +64,9 @@ getButtonClasses(item: any): string {
   selectedProductsAdvanced:any;
   filteredProducts:any;
   addCartProducts:any[]=[];
+  addCartSum:any={};
+  selectedRow: any;
+  selectQty:string='';
 
 filterproducts(event: AutoCompleteCompleteEvent) {
   const query = event.query.trim().toLowerCase();
@@ -85,6 +89,21 @@ selectProduct() {
       qty: 1
     });
   }
+  this.sumProduct()
+}
+sumProduct(){
+  const subTotal = this.addCartProducts.reduce((acc, item) => {
+  return acc + item.qty * item.price;
+}, 0);
+  const discount = subTotal * (this.selectCouponVal/100);
+  const netAmount = subTotal - discount;
+
+  this.addCartSum = {
+   subTotal,
+   items:this.addCartProducts.length,
+    discount,
+    netAmount,
+  }
 }
 onKeyUp(e:any){
   if (e.key !== 'Enter') return;
@@ -104,13 +123,33 @@ onKeyUp(e:any){
     this.selectedProductsAdvanced = null;
   }
 }
-  // for delete Product (function) both array + local Storage
+  // for delete addCartProducts (function)  array 
   deleteProduct(id: any) {
     this.addCartProducts = this.addCartProducts.filter((p: any) => {
       return p.id !== id;
     });
   }
 
+  getQty(e:any){
+    console.log(e.data)
+    this.selectQty = e.data.qty
+  }
+  setQty(c:any){
+    const num = [1,2,3,4,5,6,7,8,9,0]
+    if(num.includes(c)){
+      if (this.selectQty[0] !== "0") {
+        this.selectQty += c
+      }else{
+        this.selectQty = ''
+      }
+    }else if (c == '←') {
+      
+    } else if (c == 'C') {
+      this.selectQty='';
+    } else if (c == '↲') {
+      
+    }
+  }
 
   // for popover on discount
   toggleCoupon(e:any){
@@ -120,6 +159,7 @@ onKeyUp(e:any){
   selectCoupon(coupon:any){
     this.selectCouponVal = coupon;
     this.op.hide()
+    this.sumProduct()
   }
   searchCoupons(e:any){
     const val = e.target.value.trim()
