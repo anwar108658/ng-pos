@@ -132,16 +132,16 @@ onKeyUp(e:any){
 
   getQty(e:any){
     console.log(e.data)
-    this.selectQty = e.data.qty
+    this.selectQty = String(e.data.qty)
   }
   setQty(c:any){
     const num = [1,2,3,4,5,6,7,8,9,0]
     if(num.includes(c)){
-      if (this.selectQty[0] !== "0") {
-        this.selectQty += c
-      }else{
-        this.selectQty = ''
+      console.log(this.selectQty.length,"le")
+      if (this.selectQty.length == 0 && c == "0") {
+        return
       }
+      this.selectQty += c
     }else if (c == '←') {
       
     } else if (c == 'C') {
