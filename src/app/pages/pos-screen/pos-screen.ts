@@ -1,19 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Button } from "primeng/button";
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
+import { Popover } from "primeng/popover";
+import { PercentPipe } from '@angular/common';
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule],
+  imports: [PercentPipe,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule, Popover],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
 export class PosScreen {
+  @ViewChild('op') op!:Popover
   ngOnInit(){
     this.products = JSON.parse(localStorage.getItem('product')||'[]')
-    console.log(this.products) 
+    this.coupons = JSON.parse(localStorage.getItem('coupon')||'[]')
+    console.log(this.coupons)
   }
 posButtons = [
   { id: 1, name: 'customers', label: 'Customers', color: 'green', col: 1, row: 1 },
@@ -53,6 +57,9 @@ getButtonClasses(item: any): string {
     {id:0,class:""},
   ]
   products=[];
+  coupons:any=[];
+  filterCoupons:any=[];
+  selectCouponVal:number=0;
   selectedProductsAdvanced:any;
   filteredProducts:any;
   addCartProducts:any[]=[];
@@ -102,5 +109,24 @@ onKeyUp(e:any){
     this.addCartProducts = this.addCartProducts.filter((p: any) => {
       return p.id !== id;
     });
+  }
+
+
+  // for popover on discount
+  toggleCoupon(e:any){
+    this.op.toggle(e)
+    this.filterCoupons = this.coupons
+  }
+  selectCoupon(coupon:any){
+    this.selectCouponVal = coupon;
+    this.op.hide()
+  }
+  searchCoupons(e:any){
+    const val = e.target.value.trim()
+    console.log(val)
+    this.filterCoupons = this.coupons.filter((item:any) => {
+      return item.couponName.toLowerCase().includes(val)
+    })
+    console.log(this.filterCoupons,this.coupons)
   }
 }
