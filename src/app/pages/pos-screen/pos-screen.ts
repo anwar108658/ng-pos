@@ -129,6 +129,7 @@ onKeyUp(e:any){
     this.addCartProducts = this.addCartProducts.filter((p: any) => {
       return p.id !== id;
     });
+    this.sumProduct()
   }
 
   getQty(e:any){
