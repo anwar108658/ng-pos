@@ -3,7 +3,7 @@
   <div class="w-[55%] p-2">
     <!-- upper -->
     <div class="scrollCs h-[80%] border-2 border-gray-200 overflow-auto">
-      <p-table [value]="addCartProducts" size="small" selectionMode="single" (onRowSelect)="getQty($event)" [(selection)]="selectedRow" dataKey="id">
+      <p-table [value]="addCartProducts" size="small" selectionMode="single" showGridlines (onRowSelect)="getQty($event)" [(selection)]="selectedRow" dataKey="id">
         <ng-template #header>
           <tr>
             <th>Item</th>
