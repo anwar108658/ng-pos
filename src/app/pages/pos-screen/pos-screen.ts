@@ -149,7 +149,7 @@ onKeyUp(e:any){
     } else if (c == 'C') {
       this.selectQty='';
     } else if (c == '↲') {
-      if (this.selectRowData) {
+      if (this.selectRowData && this.selectQty.length > 0) {
         this.addCartProducts = this.addCartProducts.map((item)=>{
           if (item.id === this.selectRowData.id) {
             return {...item,qty:Number(this.selectQty)}
@@ -157,7 +157,6 @@ onKeyUp(e:any){
           return item
         })
         this.sumProduct()
-        this.selectRowData = null
         this.selectQty = ''
       }
     }
