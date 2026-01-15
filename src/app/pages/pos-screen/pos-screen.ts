@@ -4,8 +4,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
 import { Popover } from "primeng/popover";
-import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { CurrencyPipe, Location, PercentPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
+import { ProductSetting } from '../../services/product-setting';
 
 @Component({
   selector: 'app-pos-screen',
@@ -15,6 +16,7 @@ import { TableModule } from 'primeng/table';
 })
 export class PosScreen {
   @ViewChild('op') op!:Popover
+  constructor(public productSetting:ProductSetting,private location:Location){}
   ngOnInit(){
     this.products = JSON.parse(localStorage.getItem('product')||'[]')
     this.coupons = JSON.parse(localStorage.getItem('coupon')||'[]')
@@ -180,5 +182,17 @@ onKeyUp(e:any){
       return item.couponName.toLowerCase().includes(val)
     })
     console.log(this.filterCoupons,this.coupons)
+  }
+
+  // pos operational work
+  getPosButton(btn:string){
+    switch (btn) {
+      case 'Back':
+        this.location.back()
+        break;
+    
+      default:
+        break;
+    }
   }
 }
