@@ -66,6 +66,7 @@ getButtonClasses(item: any): string {
   addCartProducts:any[]=[];
   addCartSum:any={};
   selectedRow: any;
+  selectRowData:any;
   selectQty:string='';
 
 filterproducts(event: AutoCompleteCompleteEvent) {
@@ -132,6 +133,7 @@ onKeyUp(e:any){
 
   getQty(e:any){
     console.log(e.data)
+    this.selectRowData = e.data;
     this.selectQty = String(e.data.qty)
   }
   setQty(c:any){
@@ -143,11 +145,21 @@ onKeyUp(e:any){
       }
       this.selectQty += c
     }else if (c == '←') {
-      
+      this.selectQty = this.selectQty.slice(0,-1)
     } else if (c == 'C') {
       this.selectQty='';
     } else if (c == '↲') {
-      
+      if (this.selectRowData) {
+        this.addCartProducts = this.addCartProducts.map((item)=>{
+          if (item.id === this.selectRowData.id) {
+            return {...item,qty:Number(this.selectQty)}
+          }
+          return item
+        })
+        this.sumProduct()
+        this.selectRowData = null
+        this.selectQty = ''
+      }
     }
   }
 
