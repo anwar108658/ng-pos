@@ -7,15 +7,18 @@ import { Popover } from "primeng/popover";
 import { CurrencyPipe, Location, PercentPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ProductSetting } from '../../services/product-setting';
+import { CouponSelectComponent } from '../../components/coupon-select/coupon-select';
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [PercentPipe,CurrencyPipe,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule, Popover,TableModule],
+  imports: [PercentPipe,CurrencyPipe,CouponSelectComponent,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule, Popover,TableModule],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
 export class PosScreen {
   @ViewChild('op') op!:Popover
+  @ViewChild('tableCoupon') tableCoupon!:any
+
   constructor(public productSetting:ProductSetting,private location:Location){}
   ngOnInit(){
     this.products = JSON.parse(localStorage.getItem('product')||'[]')
@@ -73,7 +76,6 @@ getButtonClasses(item: any): string {
 
 filterproducts(event: AutoCompleteCompleteEvent) {
   const query = event.query.trim().toLowerCase();
-
   this.filteredProducts = this.products.filter((product: any) =>
     product.itemCode.toLowerCase().includes(query)
   );
@@ -89,14 +91,18 @@ selectProduct() {
   } else {
     this.addCartProducts.push({
       ...this.selectedProductsAdvanced,
-      qty: 1
+      qty: 1,
+      discount:0
     });
   }
   this.sumProduct()
 }
 sumProduct(){
   const subTotal = this.addCartProducts.reduce((acc, item) => {
-  return acc + item.qty * item.price;
+    let finalPrice = item.qty * item.price
+    let discount = finalPrice * (item.discount/100);
+    item.price = finalPrice
+  return acc + (finalPrice - discount);
 }, 0);
   const discount = subTotal * (this.selectCouponVal/100);
   const netAmount = subTotal - discount;
@@ -182,6 +188,18 @@ onKeyUp(e:any){
       return item.couponName.toLowerCase().includes(val)
     })
     console.log(this.filterCoupons,this.coupons)
+  }
+  showCouponToggleForTable(e:any){
+    this.tableCoupon.toggleCoupon(e)
+  }
+  couponSelectForTable(e:any,id:any){
+    this.addCartProducts = this.addCartProducts.map((item) => {
+      if (item.id == id) {
+        return {...item,discount:e}
+      }
+      return item
+    })
+    this.sumProduct()
   }
 
   // pos operational work

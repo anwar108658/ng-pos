@@ -1,0 +1,27 @@
+<p-popover styleClass="w-full max-w-90" #op>
+  <div class="p-2">
+    <div class="mb-2">
+      <span class="font-medium block mb-2">Coupons</span>
+      <input
+        placeholder="Search Coupons"
+        (input)="searchCoupons($event)"
+        class="w-full"
+        pSize="small"
+        pInputText
+      />
+    </div>
+    <ul class="w-full max-h-50 overflow-auto grid grid-cols-3 gap-2">
+      @for (item of filterCoupons; track $index) {
+      <li
+        (click)="selectCoupon(item.amount)"
+        class="h-12 flex flex-col gap-1 col-span-1 bg-blue-100/10 p-1 rounded-md text-[.8rem] cursor-pointer"
+      >
+        <span class="font-semibold">{{ item?.couponName }}</span>
+        <p class="bg-green-600 text-gray-200 rounded-2xl px-2 text-[.7rem]">
+          Discount {{ item?.amount / 100 | percent }}
+        </p>
+      </li>
+      }
+    </ul>
+  </div>
+</p-popover>

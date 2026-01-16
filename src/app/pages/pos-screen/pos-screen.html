@@ -10,6 +10,7 @@
             <th>Qty</th>
             <th>Before D</th>
             <th>Unit</th>
+            <th>Discount</th>
             <th>Total Price</th>
             <th>Act</th>
           </tr>
@@ -28,8 +29,19 @@
               </div>
             </td>
             <td>{{ item.qty }}</td>
-            <td>{{ item.price |currency}}</td>
+            <td>{{ item.price | currency}}</td>
             <td>{{ item?.uOm?.code}}</td>
+            <td class="text-center">
+              <p-button
+                variant="text"
+                severity="info"
+                styleClass="p-0"
+                size="small"
+                [label]="'% '+item.discount"
+                (onClick)="showCouponToggleForTable($event)"
+              />
+              <app-coupon-select [coupons]="coupons" (couponSelected)="couponSelectForTable($event,item.id)" #tableCoupon />
+            </td>
             <td>{{ item.qty * item.price | currency}}</td>   
             <td>
               <p-button
