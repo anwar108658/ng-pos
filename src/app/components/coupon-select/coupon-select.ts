@@ -10,7 +10,7 @@ import { Popover, PopoverModule } from 'primeng/popover';
 })
 export class CouponSelectComponent {
   @Input() coupons: any[] = [];
-  @Output() couponSelected = new EventEmitter<number>();
+  @Output() couponSelected = new EventEmitter<Number>();
 
   @ViewChild('op') op!: Popover;
 

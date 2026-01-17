@@ -3,7 +3,6 @@ import { Button } from "primeng/button";
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
-import { Popover } from "primeng/popover";
 import { CurrencyPipe, Location, PercentPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ProductSetting } from '../../services/product-setting';
@@ -11,13 +10,13 @@ import { CouponSelectComponent } from '../../components/coupon-select/coupon-sel
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [PercentPipe,CurrencyPipe,CouponSelectComponent,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule, Popover,TableModule],
+  imports: [PercentPipe,CurrencyPipe,CouponSelectComponent,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule,TableModule],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
 export class PosScreen {
-  @ViewChild('op') op!:Popover
   @ViewChild('tableCoupon') tableCoupon!:any
+  @ViewChild('coupon') coupon!:any
 
   constructor(public productSetting:ProductSetting,private location:Location){}
   ngOnInit(){
@@ -66,6 +65,7 @@ getButtonClasses(item: any): string {
   coupons:any=[];
   filterCoupons:any=[];
   selectCouponVal:number=0;
+  selectCouponIdForTable=0;
   selectedProductsAdvanced:any;
   filteredProducts:any;
   addCartProducts:any[]=[];
@@ -82,12 +82,13 @@ filterproducts(event: AutoCompleteCompleteEvent) {
 }
 
 selectProduct() {
-  const existingItem = this.addCartProducts.find(
+  let existingItem = this.addCartProducts.find(
     i => i.itemCode === this.selectedProductsAdvanced.itemCode
   );
 
   if (existingItem) {
     existingItem.qty += 1;
+    existingItem.totalPrice = this.percentageFunc(existingItem.qty,existingItem.price,existingItem.discount)
   } else {
     this.addCartProducts.push({
       ...this.selectedProductsAdvanced,
@@ -99,20 +100,24 @@ selectProduct() {
 }
 sumProduct(){
   const subTotal = this.addCartProducts.reduce((acc, item) => {
-    let finalPrice = item.qty * item.price
-    let discount = finalPrice * (item.discount/100);
-    item.price = finalPrice
-  return acc + (finalPrice - discount);
+  return acc + this.percentageFunc(item.qty,item.price,item.discount);
 }, 0);
-  const discount = subTotal * (this.selectCouponVal/100);
-  const netAmount = subTotal - discount;
+  const discountVal = subTotal * (this.selectCouponVal/100);
+  const netAmount = subTotal - discountVal;
 
   this.addCartSum = {
    subTotal,
    items:this.addCartProducts.length,
-    discount,
+   discount:this.selectCouponVal,
+    discountVal,
     netAmount,
   }
+}
+percentageFunc(qty:number,price:number,discount:number){
+  let p = qty * price
+  let p2 = p * (discount / 100)
+  let finalP = p-p2
+  return finalP
 }
 onKeyUp(e:any){
   if (e.key !== 'Enter') return;
@@ -161,7 +166,8 @@ onKeyUp(e:any){
       if (this.selectRowData && this.selectQty.length > 0) {
         this.addCartProducts = this.addCartProducts.map((item)=>{
           if (item.id === this.selectRowData.id) {
-            return {...item,qty:Number(this.selectQty)}
+            let totalPrice = this.percentageFunc(Number(this.selectQty),item.price,item.discount);
+            return {...item,qty:Number(this.selectQty),totalPrice}
           }
           return item
         })
@@ -172,30 +178,24 @@ onKeyUp(e:any){
   }
 
   // for popover on discount
-  toggleCoupon(e:any){
-    this.op.toggle(e)
-    this.filterCoupons = this.coupons
+  showCoupon(e:any){
+    this.coupon.toggleCoupon(e)
   }
-  selectCoupon(coupon:any){
-    this.selectCouponVal = coupon;
-    this.op.hide()
+  couponSelect(e:any){
+    this.selectCouponVal=e
     this.sumProduct()
   }
-  searchCoupons(e:any){
-    const val = e.target.value.trim()
-    console.log(val)
-    this.filterCoupons = this.coupons.filter((item:any) => {
-      return item.couponName.toLowerCase().includes(val)
-    })
-    console.log(this.filterCoupons,this.coupons)
-  }
-  showCouponToggleForTable(e:any){
+  showCouponToggleForTable(e:any,id:any){
     this.tableCoupon.toggleCoupon(e)
+    this.selectCouponIdForTable=id;
   }
-  couponSelectForTable(e:any,id:any){
+  couponSelectForTable(e:any){
     this.addCartProducts = this.addCartProducts.map((item) => {
-      if (item.id == id) {
-        return {...item,discount:e}
+      if (item.id === this.selectCouponIdForTable) {
+        let p = (item.price * item.qty)
+        let p2 =  p * (e / 100)
+        let totalPrice = p - p2 
+        return {...item,discount:e,totalPrice:totalPrice}
       }
       return item
     })
