@@ -1,4 +1,4 @@
-import { DatePipe,CurrencyPipe } from '@angular/common';
+import { DatePipe,CurrencyPipe, PercentPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
@@ -16,8 +16,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-product',
   imports: [
     ReactiveFormsModule,
-    DatePipe,
-    CurrencyPipe,
+    PercentPipe,
     Button,
     DialogModule,
     InputTextModule,
@@ -27,17 +26,17 @@ import { MessageService } from 'primeng/api';
     DatePickerModule,
     Toast,
   ],
-  templateUrl: './product.html',
-  styleUrl: './product.css',
+  templateUrl: './customers.html',
+  styleUrl: './customers.css',
   providers:[MessageService]
 })
-export class Product {
+export class Customers {
 
   constructor(public productSetting:ProductSetting,private messageService:MessageService){}
 
   // load data(product) from local storage
   ngOnInit() {
-    this.products = JSON.parse(localStorage.getItem('product') || '[]');
+    this.customers = JSON.parse(localStorage.getItem('customer') || '[]');
   }
 
   // message
@@ -48,7 +47,7 @@ export class Product {
 
   // popup
   isPopupOpen = false;
-  selectCategory = ['Category 1', 'Category 2','Category 3'];
+  selectCategory = ['Phone', 'Laptop'];
   uomList = [
   { code: 'PCS', label: 'Piece' },
   { code: 'KG', label: 'Kilogram' },
@@ -60,87 +59,79 @@ export class Product {
   { code: 'DOZEN', label: '12 Pieces' },
 ];
 
-  products: any = [];
+  customers: any = [];
   isUpdate = false;
   editId: null | number = null;
 
-  productForm = new FormGroup({
+  customerForm = new FormGroup({
 
-    itemCode: new FormControl('', [
+    customerId: new FormControl('', [
      Validators.required,
      Validators.minLength(1),
      Validators.maxLength(15),
     ]),
-    uOm: new FormControl('', [Validators.required]),
-    productName: new FormControl('', [
+    customerName: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(30),
     ]),
-    price: new FormControl('', [
+    amount: new FormControl('', [
       Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(30),
     ]),
-    date: new FormControl('', [Validators.required]),
-    category: new FormControl('', [Validators.required]),
   });
 
   // Add + update base on condition (function)  both array + local Storage
-  AddProduct(form: any) {
-    //for Add product
+  AddCustomer(form: any) {
+    //for Add customer
     if (!this.isUpdate === true) {
-      if (form.invalid || this.productForm.get('itemCode')?.value?.trim() === "") {this.show('warn','form Invalid');return;}
-      if(!this.checkProduct(form)){this.show('error','Please Enter Uniq Item Code');return;}
-
-      const value = { id: Math.random() * 3000, ...form.value };
-      this.products.push(value);
-      localStorage.setItem('product', JSON.stringify(this.products));
-      this.productForm.reset();
+      if (form.invalid ||this.customerForm.get('customerId')?.value?.trim() === "") {this.show('warn','form Invalid');return;}
+      if(!this.checkCustomer(form)){this.show('error','Please Enter Uniq Customer Id');return;}
+      this.customers.push(form.value);
+      localStorage.setItem('customer', JSON.stringify(this.customers));
+      this.customerForm.reset();
       this.isPopupOpen = false;
 
     } else {
-      // for update product
-      if (form.invalid || this.editId === null || this.productForm.get('itemCode')?.value?.trim() === "") {this.show('warn','form Invalid');return;}
-      if(!this.checkProduct(form)){this.show('error','Please Enter Uniq Item Code');return;}
+      // for update customer
+      if (form.invalid || this.editId === null||this.customerForm.get('customerId')?.value?.trim() === "") {this.show('warn','form Invalid');return;}
+      if(!this.checkCustomer(form)){this.show('error','Please Enter Uniq Customer Id');return;}
 
-      this.products = this.products.map((p: any) => {
-        if (p.id === this.editId) {
-          let val = { ...p, ...this.productForm.value };
+      this.customers = this.customers.map((p: any) => {
+        if (p.customerId === this.editId) {
+          let val = { ...p, ...this.customerForm.value };
           return val
         }
         return p;
       });
 
-      localStorage.setItem('product', JSON.stringify(this.products));
+      localStorage.setItem('customer', JSON.stringify(this.customers));
       this.formClose()
     }
   }
 
-  // only get id for edit product (function)
+  // only get id for edit customer (function)
   editProduct(data: any, id: number) {
     this.isPopupOpen = true;
     this.isUpdate = true;
     this.editId = id;
-    this.productForm.patchValue({
+    this.customerForm.patchValue({
       ...data,
-      date: new Date(data.date),
     });
-    this.productForm.get('itemCode')?.disable();
+    this.customerForm.get('customerId')?.disable();
   }
   
-  // for delete Product (function) both array + local Storage
+  // for delete customer (function) both array + local Storage
   deleteProduct(id: any) {
-    this.products = this.products.filter((p: any) => {
-      return p.id !== id;
+    this.customers = this.customers.filter((p: any) => {
+      return p.customerId !== id;
     });
-    localStorage.setItem('product', JSON.stringify(this.products));
+    localStorage.setItem('customer', JSON.stringify(this.customers));
   }
   
-  // for check  ItemCode not same
-  checkProduct(form:any):boolean {
-    const isProductExist = this.products.some((p:any) => p.itemCode === form.value.itemCode)
-    if (isProductExist) {
+  // for check  Customer id not same
+  checkCustomer(form:any):boolean {
+    const isCustomerExist = this.customers.some((p:any) => p.customerId === form.value.customerId)
+    if (isCustomerExist) {
       return false;
     }
     return true
@@ -149,8 +140,8 @@ export class Product {
   formClose(){
     this.isUpdate=false;
     this.editId=null;
-    this.productForm.reset();
+    this.customerForm.reset();
     this.isPopupOpen = false;
-    this.productForm.get('itemCode')?.enable()
+    this.customerForm.get('customerId')?.enable()
   }
 }

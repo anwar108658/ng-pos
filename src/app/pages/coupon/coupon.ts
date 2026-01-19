@@ -84,7 +84,7 @@ export class Coupon {
   AddCoupon(form: any) {
     //for Add coupon
     if (!this.isUpdate === true) {
-      if (form.invalid) {this.show('warn','form Invalid');return;}
+      if (form.invalid ||this.couponForm.get('couponId')?.value?.trim() === "") {this.show('warn','form Invalid');return;}
       if(!this.checkCoupon(form)){this.show('error','Please Enter Uniq Coupon Id');return;}
       this.coupons.push(form.value);
       localStorage.setItem('coupon', JSON.stringify(this.coupons));
@@ -93,7 +93,7 @@ export class Coupon {
 
     } else {
       // for update coupon
-      if (form.invalid || this.editId === null) {this.show('warn','form Invalid');return;}
+      if (form.invalid || this.editId === null||this.couponForm.get('couponId')?.value?.trim() === "") {this.show('warn','form Invalid');return;}
       if(!this.checkCoupon(form)){this.show('error','Please Enter Uniq Item Code');return;}
 
       this.coupons = this.coupons.map((p: any) => {
