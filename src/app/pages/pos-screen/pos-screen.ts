@@ -14,6 +14,7 @@ import { CouponSelectComponent } from '../../components/coupon-select/coupon-sel
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
+
 export class PosScreen {
   @ViewChild('tableCoupon') tableCoupon!:any
   @ViewChild('coupon') coupon!:any
@@ -46,7 +47,7 @@ getButtonClasses(item: any): string {
   return `${colorClasses[item.color]} ${gridClasses} rounded-md text-white text-[.8rem] font-semibold p-2`;
 }
 
-  calculateNum=[
+  calculateNum = [
     {id:7,class:""},
     {id:8,class:""},
     {id:9,class:""},
@@ -98,6 +99,7 @@ selectProduct() {
   }
   this.sumProduct()
 }
+
 sumProduct(){
   const subTotal = this.addCartProducts.reduce((acc, item) => {
   return acc + this.percentageFunc(item.qty,item.price,item.discount);
@@ -113,6 +115,7 @@ sumProduct(){
     netAmount,
   }
 }
+
 percentageFunc(qty:number,price:number,discount:number){
   let p = qty * price
   let p2 = p * (discount / 100)
@@ -207,8 +210,7 @@ onKeyUp(e:any){
     switch (btn) {
       case 'Back':
         this.location.back()
-        break;
-    
+        break;  
       default:
         break;
     }

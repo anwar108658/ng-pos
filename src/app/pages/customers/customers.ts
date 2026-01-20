@@ -48,18 +48,6 @@ export class Customers {
 
   // popup
   isPopupOpen = false;
-  selectCategory = ['Phone', 'Laptop'];
-  uomList = [
-  { code: 'PCS', label: 'Piece' },
-  { code: 'KG', label: 'Kilogram' },
-  { code: 'G', label: 'Gram' },
-  { code: 'L', label: 'Liter' },
-  { code: 'ML', label: 'Milliliter' },
-  { code: 'BOX', label: 'Box' },
-  { code: 'PACK', label: 'Pack' },
-  { code: 'DOZEN', label: '12 Pieces' },
-];
-
   customers: any = [];
   isUpdate = false;
   editId: null | number = null;

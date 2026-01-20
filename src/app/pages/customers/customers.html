@@ -2,30 +2,29 @@
   <div class="p-2 py-5 w-full flex justify-end">
     <p-toast />
     <p-button
-    (onClick)="[(isPopupOpen = true), this.customerForm.reset()]"
-    label="Customer"
-    size="small"
-    variant="outlined"
+      (onClick)="[(isPopupOpen = true), this.customerForm.reset()]"
+      label="Customer"
+      size="small"
+      variant="outlined"
       icon="pi pi-plus"
-      />
-    </div>
-    
-    <!-- Customer Form popUp -->
+    />
+  </div>
+
+  <!-- Customer Form popUp -->
   <p-dialog
-  [header]="isUpdate ? 'Update Customer' : 'Add Customer'"
-  [modal]="true"
-  closable="false"
-  [(visible)]="isPopupOpen"
-  [style]="{ width: '30rem' }"
+    [header]="isUpdate ? 'Update Customer' : 'Add Customer'"
+    [modal]="true"
+    closable="false"
+    [(visible)]="isPopupOpen"
+    [style]="{ width: '30rem' }"
   >
-  <form
+    <form
       [formGroup]="customerForm"
       (ngSubmit)="AddCustomer(customerForm)"
       class="mt-2 flex flex-col gap-3"
     >
-    <div>
-    </div>
-    <div class="grid grid-cols-2 gap-3">
+      <div></div>
+      <div class="grid grid-cols-2 gap-3">
         <p-floatlabel class="flex-1" variant="on">
           <input
             class="w-full"
@@ -49,7 +48,13 @@
           <label for="on_title">Customer Name</label>
         </p-floatlabel>
         <p-floatlabel class="flex-1" variant="on">
-          <p-inputmask fluid mask="(99) 999-999999" formControlName="phone" size="small" placeholder="(92) 999-999999" />
+          <p-inputmask
+            fluid
+            mask="(99) 999-999999"
+            formControlName="phone"
+            size="small"
+            placeholder="(92) 999-999999"
+          />
           <label for="on_title">Phone</label>
         </p-floatlabel>
         <p-floatlabel class="flex-1" variant="on">
@@ -107,7 +112,7 @@
       [class.text-gray-300]="this.productSetting.darkMode()"
       class="bg-gray-100"
     >
-      <tr  [className]="this.productSetting.darkMode()?'text-gray-300':'text-gray-700'">
+      <tr [className]="this.productSetting.darkMode() ? 'text-gray-300' : 'text-gray-700'">
         <th class="px-4 py-2 text-left text-sm font-semibold">Id</th>
         <th class="px-4 py-2 text-left text-sm font-semibold">Name</th>
         <th class="px-4 py-2 text-left text-sm font-semibold">Phone</th>
@@ -115,39 +120,38 @@
         <th class="px-4 py-2 text-left text-sm font-semibold">Action</th>
       </tr>
     </thead>
-  
+
     <tbody>
       @for (p of customers; track p; let i = $index) {
-      <tr
-        [class.hover:bg-gray-800]="this.productSetting.darkMode()"
-        [class.border-y-gray-700]="this.productSetting.darkMode()"
-        class="hover:bg-gray-50 border-y border-gray-300"
-      >
-        <td class="px-4 py-1 text-[.8rem]">{{ p.customerId }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.name }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.phone }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.email }}</td>
-        <td class="px-4 py-1 text-[.8rem] flex gap-2">
-          <p-button
-            (onClick)="editProduct(p, p.customerId)"
-            severity="help"
-            [variant]="this.productSetting.darkMode() ? 'text' : 'outlined'"
-            icon="pi pi-pencil"
-            size="small"
-            styleClass="p-1"
-          />
-          <p-button
-            (onClick)="deleteProduct(p.customerId)"
-            severity="danger"
-            [variant]="this.productSetting.darkMode() ? 'text' : 'outlined'"
-            icon="pi pi-trash"
-            size="small"
-            styleClass="p-1"
-          />
-        </td>
-      </tr>
+        <tr
+          [class.hover:bg-gray-800]="this.productSetting.darkMode()"
+          [class.border-y-gray-700]="this.productSetting.darkMode()"
+          class="hover:bg-gray-50 border-y border-gray-300"
+        >
+          <td class="px-4 py-1 text-[.8rem]">{{ p.customerId }}</td>
+          <td class="px-4 py-1 text-[.8rem]">{{ p.name }}</td>
+          <td class="px-4 py-1 text-[.8rem]">{{ p.phone }}</td>
+          <td class="px-4 py-1 text-[.8rem]">{{ p.email }}</td>
+          <td class="px-4 py-1 text-[.8rem] flex gap-2">
+            <p-button
+              (onClick)="editProduct(p, p.customerId)"
+              severity="help"
+              [variant]="this.productSetting.darkMode() ? 'text' : 'outlined'"
+              icon="pi pi-pencil"
+              size="small"
+              styleClass="p-1"
+            />
+            <p-button
+              (onClick)="deleteProduct(p.customerId)"
+              severity="danger"
+              [variant]="this.productSetting.darkMode() ? 'text' : 'outlined'"
+              icon="pi pi-trash"
+              size="small"
+              styleClass="p-1"
+            />
+          </td>
+        </tr>
       }
     </tbody>
   </table>
 </div>
-

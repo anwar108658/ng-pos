@@ -7,8 +7,8 @@
         <ng-template #header>
           <tr>
             <th>Item</th>
-            <th>Qty</th>
             <th>Before D</th>
+            <th>Qty</th>
             <th>Unit</th>
             <th>Discount</th>
             <th>Total Price</th>
@@ -28,8 +28,8 @@
                 >
               </div>
             </td>
-            <td>{{ item.qty }}</td>
             <td>{{ item.price | currency}}</td>
+            <td>{{ item.qty }}</td>
             <td>{{ item?.uOm?.code}}</td>
             <td class="text-center">
               <p-button
@@ -78,6 +78,14 @@
         </p>
       </div>
       <div class="max-w-[30%] text-[1rem] font-bold text-blue-600 whitespace-nowrap">
+        <p-button
+          size="small"
+          styleClass="p-0 px-1"
+          variant="text"
+          severity="info"
+          icon="pi pi-users"
+          [label]="'Customer Name : '"
+          /><span class="text-green-700">{{ selectCouponVal / 100 | percent }}</span>
         <p><span class="font-semibold">Item : </span> <span>{{addCartSum.items}}</span></p>
         <p><span>Net Amount : </span> <span class="text-green-600">{{addCartSum.netAmount|currency}}</span></p>
       </div>
