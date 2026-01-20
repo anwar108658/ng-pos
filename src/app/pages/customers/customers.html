@@ -33,9 +33,9 @@
             pInputText
             id="on_title"
             formControlName="customerId"
-            autocomplete="off"
+            autocomplete="new-password"
           />
-          <label for="on_title">Coupon Id</label>
+          <label for="on_title">Customer Id</label>
         </p-floatlabel>
         <p-floatlabel class="flex-1" variant="on">
           <input
@@ -43,28 +43,25 @@
             pSize="small"
             pInputText
             id="on_title"
-            formControlName="customerName"
+            formControlName="name"
             autocomplete="off"
           />
-          <label for="on_title">Coupon Name</label>
+          <label for="on_title">Customer Name</label>
         </p-floatlabel>
         <p-floatlabel class="flex-1" variant="on">
-          <p-inputnumber
+          <p-inputmask fluid mask="(99) 999-999999" formControlName="phone" size="small" placeholder="(92) 999-999999" />
+          <label for="on_title">Phone</label>
+        </p-floatlabel>
+        <p-floatlabel class="flex-1" variant="on">
+          <input
             class="w-full"
-            size="small"
-            type="number"
+            pSize="small"
+            pInputText
             id="on_title"
-            formControlName="amount"
-            [suffix]="'%'"
-            [min]="0"
-            [max]="100"
-            mode="decimal"
-            [maxFractionDigits]="2"
-            [minFractionDigits]="0"
-            [useGrouping]="false"
+            formControlName="email"
             autocomplete="off"
           />
-          <label for="on_title">Amount</label>
+          <label for="on_title">Email</label>
         </p-floatlabel>
       </div>
       <div class="mt-4 flex gap-2 justify-between">
@@ -111,9 +108,10 @@
       class="bg-gray-100"
     >
       <tr  [className]="this.productSetting.darkMode()?'text-gray-300':'text-gray-700'">
-        <th class="px-4 py-2 text-left text-sm font-semibold">Coupon Id</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold">Coupon Name</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold">Amount</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold">Id</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold">Name</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold">Phone</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold">Email</th>
         <th class="px-4 py-2 text-left text-sm font-semibold">Action</th>
       </tr>
     </thead>
@@ -126,8 +124,9 @@
         class="hover:bg-gray-50 border-y border-gray-300"
       >
         <td class="px-4 py-1 text-[.8rem]">{{ p.customerId }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.customerName }}</td>
-        <td class="px-4 py-1 text-[.8rem]">{{ p.amount / 100 | percent }}</td>
+        <td class="px-4 py-1 text-[.8rem]">{{ p.name }}</td>
+        <td class="px-4 py-1 text-[.8rem]">{{ p.phone }}</td>
+        <td class="px-4 py-1 text-[.8rem]">{{ p.email }}</td>
         <td class="px-4 py-1 text-[.8rem] flex gap-2">
           <p-button
             (onClick)="editProduct(p, p.customerId)"
@@ -150,6 +149,5 @@
       }
     </tbody>
   </table>
-
 </div>
 

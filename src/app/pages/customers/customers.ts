@@ -11,16 +11,17 @@ import { SelectModule } from 'primeng/select';
 import { ProductSetting } from '../../services/product-setting';
 import { Toast } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { InputMaskModule } from 'primeng/inputmask';
 
 @Component({
   selector: 'app-product',
   imports: [
     ReactiveFormsModule,
-    PercentPipe,
     Button,
     DialogModule,
     InputTextModule,
     InputNumberModule,
+    InputMaskModule,
     FloatLabelModule,
     SelectModule,
     DatePickerModule,
@@ -64,25 +65,26 @@ export class Customers {
   editId: null | number = null;
 
   customerForm = new FormGroup({
-
     customerId: new FormControl('', [
      Validators.required,
-     Validators.minLength(1),
-     Validators.maxLength(15),
     ]),
-    customerName: new FormControl('', [
+    name: new FormControl('', [
       Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(30),
     ]),
-    amount: new FormControl('', [
+    phone: new FormControl('', [
       Validators.required,
+    ]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      Validators.maxLength(50)
     ]),
   });
 
   // Add + update base on condition (function)  both array + local Storage
   AddCustomer(form: any) {
     //for Add customer
+    console.log(form.value)
     if (!this.isUpdate === true) {
       if (form.invalid ||this.customerForm.get('customerId')?.value?.trim() === "") {this.show('warn','form Invalid');return;}
       if(!this.checkCustomer(form)){this.show('error','Please Enter Uniq Customer Id');return;}
