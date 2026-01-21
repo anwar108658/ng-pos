@@ -8,10 +8,11 @@ import { TableModule } from 'primeng/table';
 import { ProductSetting } from '../../services/product-setting';
 import { CouponSelectComponent } from '../../components/coupon-select/coupon-select';
 import { Popover, PopoverModule } from 'primeng/popover';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [PercentPipe,CurrencyPipe,CouponSelectComponent,FormsModule, PopoverModule,Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule,TableModule],
+  imports: [PercentPipe,CurrencyPipe,DialogModule,CouponSelectComponent,FormsModule, PopoverModule,Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule,TableModule],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
@@ -68,6 +69,7 @@ getButtonClasses(item: any): string {
   products=[];
   coupons:any=[];
   customers:any[]=[];
+  isPosSure:boolean = true
   filteredCustomer:any[]=[]
   selectedCustomer:any={name:''};
   selectCouponVal:number=0;
@@ -115,8 +117,7 @@ sumProduct(){
    subTotal,
    items:this.addCartProducts.length,
    discount:this.selectCouponVal,
-    discountVal,
-    netAmount,
+   netAmount,
   }
 }
 
@@ -232,6 +233,9 @@ selectCustomer(customer: any) {
   getPosButton(btn:string){
     switch (btn) {
       case 'Back':
+        this.location.back()
+        break;  
+      case 'pos':
         this.location.back()
         break;  
       default:
