@@ -7,10 +7,11 @@ import { CurrencyPipe, Location, PercentPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ProductSetting } from '../../services/product-setting';
 import { CouponSelectComponent } from '../../components/coupon-select/coupon-select';
+import { Popover, PopoverModule } from 'primeng/popover';
 
 @Component({
   selector: 'app-pos-screen',
-  imports: [PercentPipe,CurrencyPipe,CouponSelectComponent,FormsModule, Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule,TableModule],
+  imports: [PercentPipe,CurrencyPipe,CouponSelectComponent,FormsModule, PopoverModule,Button, InputTextModule, AutoCompleteModule, ɵInternalFormsSharedModule,TableModule],
   templateUrl: './pos-screen.html',
   styleUrl: './pos-screen.css',
 })
@@ -18,12 +19,14 @@ import { CouponSelectComponent } from '../../components/coupon-select/coupon-sel
 export class PosScreen {
   @ViewChild('tableCoupon') tableCoupon!:any
   @ViewChild('coupon') coupon!:any
+  @ViewChild('customer') customer!:Popover
 
   constructor(public productSetting:ProductSetting,private location:Location){}
   ngOnInit(){
     this.products = JSON.parse(localStorage.getItem('product')||'[]')
     this.coupons = JSON.parse(localStorage.getItem('coupon')||'[]')
-    console.log(this.coupons)
+    this.customers = JSON.parse(localStorage.getItem('customer')||'[]')
+    console.log(this.customers)
   }
 posButtons = [
   { id: 1, name: 'customers', label: 'Customers', color: 'green', col: 1, row: 1 },
@@ -64,7 +67,9 @@ getButtonClasses(item: any): string {
   ]
   products=[];
   coupons:any=[];
-  filterCoupons:any=[];
+  customers:any[]=[];
+  filteredCustomer:any[]=[]
+  selectedCustomer:any={name:''};
   selectCouponVal:number=0;
   selectCouponIdForTable=0;
   selectedProductsAdvanced:any;
@@ -106,7 +111,6 @@ sumProduct(){
 }, 0);
   const discountVal = subTotal * (this.selectCouponVal/100);
   const netAmount = subTotal - discountVal;
-
   this.addCartSum = {
    subTotal,
    items:this.addCartProducts.length,
@@ -205,6 +209,25 @@ onKeyUp(e:any){
     this.sumProduct()
   }
 
+  // for popover customer
+
+searchCustomer(e: any) {
+const val = e.target.value.toLowerCase().trim();
+this.filteredCustomer = this.customers.filter(c =>
+  c.name.toLowerCase().includes(val)
+);
+}
+toggleCustomer(event: any) {
+  this.filteredCustomer = [...this.customers];
+  this.customer.toggle(event)
+}
+
+selectCustomer(customer: any) {
+  this.selectedCustomer  = customer
+  this.addCartSum = {...this.addCartSum,customer}
+  this.customer.hide()
+  console.log(this.addCartSum)
+}
   // pos operational work
   getPosButton(btn:string){
     switch (btn) {
