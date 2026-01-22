@@ -241,6 +241,7 @@ selectCustomer(customer: any) {
         products:this.addCartProducts,
         customer:this.selectedCustomer,
         }
+        console.log(this.addCartSum)
         this.isPosSure = !this.isPosSure
         break;  
       default:

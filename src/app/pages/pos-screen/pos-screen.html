@@ -181,10 +181,30 @@
         @for (item of posButtons; track $index) {
         <button (click)="getPosButton(item.name)" [class]="getButtonClasses(item)">{{ item.label }}</button>
         }
-        <p-dialog [(visible)]="isPosSure" modal="true">
-          
-        </p-dialog>
       </div>
+      <p-dialog [(visible)]="isPosSure" showHeader="false" styleClass="p-0!" modal="true">
+        <table class="mt-5 border text-[.7rem]">
+          <thead>
+            <tr class="border">
+              <th class="px-1 border">product</th>
+              <th class="px-1 border">Qty</th>
+              <th class="px-1 border">Actual price</th>
+              <th class="px-1 border">discount</th>
+              <th class="px-1 border">discount price</th>
+            </tr>
+          </thead>
+          <tbody class="border">
+            @for (item of addCartSum.products; track $index) {
+              <tr class="border text-center">
+                <td class="px-1 border">{{item.productName}}</td>
+                <td class="px-1 border">{{item.qty}}</td>
+                <td class="px-1 border">{{item.price|currency}}</td>
+                <td class="px-1 border">% {{item.discount}}</td>
+              </tr>
+              }
+          </tbody>
+        </table>
+      </p-dialog>
     </div>
   </div>
     
