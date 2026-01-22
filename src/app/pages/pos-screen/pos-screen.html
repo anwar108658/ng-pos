@@ -174,18 +174,18 @@
             />
           </div>
           }
+          
         </div>
       </div>
       <div class="col-span-5 grid grid-cols-4 grid-rows-4 gap-1 p-1 overflow-auto scrollCs">
         @for (item of posButtons; track $index) {
         <button (click)="getPosButton(item.name)" [class]="getButtonClasses(item)">{{ item.label }}</button>
         }
+        <p-dialog [(visible)]="isPosSure" modal="true">
+          
+        </p-dialog>
       </div>
     </div>
   </div>
-  <div>
-    <p-dialog [visible]="true" modal="true">
     
-    </p-dialog>
-  </div>
 </div>

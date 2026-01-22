@@ -34,7 +34,7 @@ posButtons = [
   { id: 2, name: 'orders', label: 'Orders', color: 'yellow', col: 1, row: 1 },
   { id: 3, name: 'sales', label: 'Sales', color: 'blue', col: 1, row: 1 },
   { id: 4, name: 'Back', label: 'back', color: 'red', col: 1, row: 1 },
-  { id: 5, name: 'reports', label: 'Reports', color: 'lime', col: 2, row: 1 },
+  { id: 5, name: 'pos', label: 'POS', color: 'lime', col: 2, row: 1 },
 ];
 
 getButtonClasses(item: any): string {
@@ -46,7 +46,7 @@ getButtonClasses(item: any): string {
     lime: 'bg-lime-500/70'
   };
   
-  const gridClasses = `col-span-${item.col} row-span-${item.row}`;
+  const gridClasses = ` col-span-${item.col} row-span-${item.row} `;
   
   return `${colorClasses[item.color]} ${gridClasses} rounded-md text-white text-[.8rem] font-semibold p-2`;
 }
@@ -69,7 +69,7 @@ getButtonClasses(item: any): string {
   products=[];
   coupons:any=[];
   customers:any[]=[];
-  isPosSure:boolean = true
+  isPosSure:boolean = false
   filteredCustomer:any[]=[]
   selectedCustomer:any={name:''};
   selectCouponVal:number=0;
@@ -236,7 +236,12 @@ selectCustomer(customer: any) {
         this.location.back()
         break;  
       case 'pos':
-        this.location.back()
+        this.addCartSum = {
+        ...this.addCartSum,
+        products:this.addCartProducts,
+        customer:this.selectedCustomer,
+        }
+        this.isPosSure = !this.isPosSure
         break;  
       default:
         break;
