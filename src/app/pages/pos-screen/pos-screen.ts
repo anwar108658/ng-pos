@@ -27,6 +27,7 @@ export class PosScreen {
     this.products = JSON.parse(localStorage.getItem('product')||'[]')
     this.coupons = JSON.parse(localStorage.getItem('coupon')||'[]')
     this.customers = JSON.parse(localStorage.getItem('customer')||'[]')
+    this.sales = JSON.parse(localStorage.getItem('sales')||'[]')
     console.log(this.customers)
   }
 posButtons = [
@@ -72,6 +73,7 @@ getButtonClasses(item: any): string {
   isPosSure:boolean = false
   filteredCustomer:any[]=[]
   selectedCustomer:any={name:''};
+  sales:any[]=[]
   selectCouponVal:number=0;
   selectCouponIdForTable=0;
   selectedProductsAdvanced:any;
@@ -231,21 +233,33 @@ selectCustomer(customer: any) {
 }
   // pos operational work
   getPosButton(btn:string){
-    switch (btn) {
+      switch (btn) {
       case 'Back':
         this.location.back()
         break;  
       case 'pos':
         this.addCartSum = {
         ...this.addCartSum,
-        products:this.addCartProducts,
+        products:[...this.addCartProducts],
         customer:this.selectedCustomer,
         }
         console.log(this.addCartSum)
+        if (this.addCartProducts.length === 0) {
+          alert('purcahse product')
+          return;
+        }
         this.isPosSure = !this.isPosSure
         break;  
       default:
         break;
     }
+  }
+  productsPurchase(){
+    console.log(this.addCartSum)
+    this.sales.push(this.addCartSum)
+    localStorage.setItem('sales',JSON.stringify(this.sales))
+    this.addCartProducts.splice(0, this.addCartProducts.length);
+    this.addCartSum = {...this.addCartSum,items:0,subTotal:0,discount:0,netAmount:0,customer:[]}
+    this.isPosSure = !this.isPosSure
   }
 }

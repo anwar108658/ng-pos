@@ -200,12 +200,41 @@
                 <td class="px-1 border">{{item.qty}}</td>
                 <td class="px-1 border">{{item.price|currency}}</td>
                 <td class="px-1 border">% {{item.discount}}</td>
+                @if (item.totalPrice) {
+                  <td class="px-1 border">{{item.totalPrice |currency}}</td>
+                }@else {
+                  <td class="px-1 border">{{item.price|currency}}</td>
+                }
               </tr>
               }
           </tbody>
         </table>
+        <table class="w-full my-2">
+          <tbody class="text-[.7rem]">
+            <tr>
+              <th class="text-left">Item</th>
+              <td class="text-blue-400 font-semibold">{{addCartSum.items}}</td>
+              <th class="text-left">Sub Total</th>
+              <td class="text-blue-400 font-semibold">{{addCartSum.subTotal|currency}}</td>
+            </tr>
+            <tr>
+              <th class="text-left">Discount</th>
+              <td class="text-blue-400 font-semibold">% {{addCartSum.discount}}</td>
+              <th class="text-left">Net Amount</th>
+              <td class="text-[.8rem] font-bold text-green-500">{{addCartSum.netAmount|currency}}</td>
+            </tr>
+            <tr>
+              <th class="text-left">Customer</th>
+              <td class="text-blue-400  font-semibold">{{addCartSum?.customer?.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <div class="mt-1 flex justify-end gap-2">
+          <p-button (onClick)="isPosSure=false"  label="Cancel" severity="danger" size="small" styleClass="p-0 px-2"/>
+          <p-button (onClick)="productsPurchase()" label="Proceed" severity="success" size="small" styleClass="p-0 px-2"/>
+        </div>
       </p-dialog>
     </div>
   </div>
-    
 </div>
