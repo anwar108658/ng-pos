@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/pos/browser",
+  "outputDirectory": "dist/pos/browser/index.html",
   "routes": [
     { "src": "/(.*)", "dest": "/index.html" }
   ]
