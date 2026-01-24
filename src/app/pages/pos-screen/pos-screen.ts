@@ -31,9 +31,6 @@ export class PosScreen {
     console.log(this.customers)
   }
 posButtons = [
-  { id: 1, name: 'customers', label: 'Customers', color: 'green', col: 1, row: 1 },
-  { id: 2, name: 'orders', label: 'Orders', color: 'yellow', col: 1, row: 1 },
-  { id: 3, name: 'sales', label: 'Sales', color: 'blue', col: 1, row: 1 },
   { id: 4, name: 'Back', label: 'back', color: 'red', col: 1, row: 1 },
   { id: 5, name: 'pos', label: 'POS', color: 'lime', col: 2, row: 1 },
 ];
